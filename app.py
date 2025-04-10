@@ -2,28 +2,34 @@ import streamlit as st
 import json
 import subprocess
 
-# === Page Setup ===
 st.set_page_config(page_title="OpenTrace Briefing Generator", layout="centered")
-st.title("OpenTrace Prototype Brief Capture")
+st.title("🧠 OpenTrace Prototype 1")
 
-st.markdown("Complete the subject profile below and click **Generate Briefing** to produce a full intelligence report.")
+st.markdown("""
+Not to user: this form is for testing purposes only and should not be relied upon for real-world intelligence reporting.
+""")
 
-# === Subject Form ===
+# === Session state to manage workflow ===
+if "stage" not in st.session_state:
+    st.session_state.stage = 1
+
+# === Step 1: Input Subject ===
+st.header("Step 1: Input Subject")
+
 with st.form("subject_form"):
     name = st.text_input("Full Name")
     aliases = st.text_area("Aliases (comma-separated)", value="")
     email = st.text_input("Email")
-    dob = st.date_input("Date of Birth (YYYY/MM/DD format)")
-    address = st.text_input("Full Address")
-    location = st.text_input("Location (City, Region, Country)")
+    dob = st.date_input("Date of Birth")
+    address = st.text_input("Address")
+    location = st.text_input("Location")
     affiliations = st.text_area("Affiliations (comma-separated)", value="")
-    usernames = st.text_input("All known usernames and social media handles (comma-separated)")
-    phone = st.text_input("Phone Number")
-    notes = st.text_area("Notes or additional context")
+    usernames = st.text_input("Usernames / Handles")
+    phone = st.text_input("Phone")
+    notes = st.text_area("Context / Analyst Notes")
 
-    submitted = st.form_submit_button("Generate Briefing")
+    submitted = st.form_submit_button("Save Subject Profile")
 
-# === Run the Report ===
 if submitted:
     subject = {
         "name": name,
@@ -38,24 +44,32 @@ if submitted:
         "notes": notes
     }
 
-    # Save to subject.json
     with open("subject.json", "w") as f:
         json.dump(subject, f, indent=2)
 
-    st.success("✅ Subject profile saved to subject.json")
+    st.success("✅ Subject profile saved.")
+    st.session_state.stage = 2
 
-    # Run main.py
-    with st.spinner("Running analysis..."):
-        subprocess.run(["python", "main.py"], check=True)
+# === Step 2: Run Analysis (main.py) ===
+if st.session_state.stage >= 2:
+    st.header("Step 2: Run Source Analysis")
+    if st.button("Run main.py (GPT-powered analysis)"):
+        with st.spinner("Running multi-source analysis..."):
+            result = subprocess.run(["python", "main.py"], capture_output=True, text=True)
+            st.text(result.stdout[-1000:])
+        st.success("✅ Analysis complete.")
+        st.session_state.stage = 3
 
-    # Run report.py
-    with st.spinner("Generating final report..."):
-        subprocess.run(["python", "report.py"], check=True)
+# === Step 3: Generate Report ===
+if st.session_state.stage >= 3:
+    st.header("Step 3: Generate & View Report")
+    if st.button("Generate Final Report (Markdown)"):
+        with st.spinner("Building final report..."):
+            result = subprocess.run(["python", "report.py"], capture_output=True, text=True)
+            st.text(result.stdout[-1000:])
+        st.success("✅ Report generated: protection_briefing.md")
 
-    st.success("✅ Briefing complete — protection_briefing.md generated.")
-
-    # Optional: Preview the output
     if st.checkbox("Preview Report"):
         with open("protection_briefing.md", "r") as f:
-            report_md = f.read()
-        st.markdown(report_md)
+            report = f.read()
+        st.markdown(report)

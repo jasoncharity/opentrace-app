@@ -1,4 +1,4 @@
 openai>=1.0.0
-streamlit
-requests
-python-dotenv
+streamlit>=1.25.0
+requests>=2.30.0
+python-dotenv>=1.0.0

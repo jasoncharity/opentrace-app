@@ -1,21 +1,13 @@
 import os
 import json
-import openai
-def load_subject(filename="subject.json"):
-    with open(filename, "r") as f:
-        return json.load(f)
 from dotenv import load_dotenv
-from source_reliability import get_source_reliability
-
-# === Load API Key ===
-load_dotenv()
-openai.api_key = os.getenv("OPENAI_API_KEY")
-
-# === GPT Wrapper ===
 from openai import OpenAI
 
-client = OpenAI()
+# === Load environment ===
+load_dotenv()
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
+# === GPT Wrapper ===
 def call_gpt4(prompt):
     response = client.chat.completions.create(
         model="gpt-4",
@@ -23,54 +15,30 @@ def call_gpt4(prompt):
     )
     return response.choices[0].message.content
 
-# === NewsAPI Functions ===
+# === Load subject profile ===
+def load_subject(filename="subject.json"):
+    with open(filename, "r") as f:
+        return json.load(f)
 
+# === Load JSON inputs ===
 def load_news_data(filename="output_newsapi.json"):
     with open(filename, "r") as f:
         return json.load(f)
 
-def analyse_news_articles(subject, articles):
-    summaries = []
-    for article in articles[:5]:
-        title = article.get("title")
-        url = article.get("url")
-        description = article.get("description", "")
+def load_hibp_data(filename="output_hibp.json"):
+    with open(filename, "r") as f:
+        return json.load(f)
 
-        content = f"""
-        Title: {title}
-        URL: {url}
-        Description: {description}
-        """
+def load_google_results(filename="output_google.json"):
+    with open(filename, "r") as f:
+        return json.load(f)
 
-        prompt = f"""
-        You are an OSINT analyst. Review the news article below and identify:
-
-        - Any reputational concerns
-        - Legal or political controversies
-        - Links to extremist or high-risk associations
-
-        Provide bullet points. Add the article's URL in brackets at the end of each point.
-
-        {content}
-        """
-
-        result = call_gpt4(prompt)
-        reliability = get_source_reliability(url)
-
-        summaries.append({
-            "title": title,
-            "url": url,
-            "summary": result,
-            "reliability": reliability,
-            "confidence": "High"
-        })
-    return summaries
-
+# === Structure outputs ===
 def structure_news_findings(subject, findings):
     return [
         {
             "source": "NewsAPI",
-            "subject": subject,
+            "subject": subject["name"],
             "theme": "Media/Press Coverage",
             "title": item["title"],
             "url": item["url"],
@@ -81,35 +49,60 @@ def structure_news_findings(subject, findings):
         for item in findings
     ]
 
-# === HIBP Functions ===
-
-def load_hibp_data(filename="output_hibp.json"):
-    with open(filename, "r") as f:
-        return json.load(f)
-
-def analyse_breaches(subject_email, breaches):
+# === GPT Analysis Functions ===
+def analyse_news_articles(subject, articles):
     summaries = []
-    for breach in breaches:
+    for article in articles[:5]:
+        title = article.get("title")
+        url = article.get("url")
+        description = article.get("description", "")
+
+        prompt = f"""
+        You are an OSINT analyst. Review the news article below and identify:
+
+        - Reputational concerns
+        - Legal or political controversies
+        - Links to extremist or high-risk associations
+
+        Title: {title}
+        URL: {url}
+        Description: {description}
+        """
+
+        result = call_gpt4(prompt)
+
+        summaries.append({
+            "title": title,
+            "url": url,
+            "summary": result,
+            "reliability": "C - Mixed Reliability",
+            "confidence": "High"
+        })
+    return summaries
+
+def analyse_breaches(email, breaches):
+    summaries = []
+    for breach in breaches[:5]:
         content = f"""
         Breach: {breach.get('Name')}
         Date: {breach.get('BreachDate')}
         Description: {breach.get('Description')}
-        Domain: {breach.get('Domain')}
         """
 
         prompt = f"""
-        You are an OSINT analyst. Based on the breach below involving the email '{subject_email}', identify:
+        You are an OSINT analyst. Review the following breach record for {email}. Identify:
 
-        - The type of data exposed (e.g. passwords, usernames, emails, IPs)
-        - The reputational or security risk this creates for the subject
-        - The severity of the breach (low/medium/high)
+        - Type of data exposed
+        - Reputational or security risks
+        - Severity (low, medium, high)
 
-        Return bullet points. Include the breach name and date in each bullet.
+        Provide bullet points and include breach name and date in each point.
 
         {content}
         """
 
         result = call_gpt4(prompt)
+
         summaries.append({
             "breach": breach.get("Name"),
             "date": breach.get("BreachDate"),
@@ -118,59 +111,44 @@ def analyse_breaches(subject_email, breaches):
         })
     return summaries
 
-# === Google Search (Twitter) Functions ===
-
-def load_google_results(filename="output_google.json"):
-    with open(filename, "r") as f:
-        return json.load(f)
-
-def analyse_google_snippets(subject, results):
+def analyse_google_snippets(subject_name, results):
     summaries = []
     for result in results[:5]:
         title = result.get("title")
         url = result.get("link")
         snippet = result.get("snippet", "")
 
-        content = f"""
+        prompt = f"""
+        You are an OSINT analyst. Based on this snippet from a Google-indexed Twitter post, assess any public risk factors for {subject_name}.
+
+        - Highlight reputational issues
+        - Identify political or controversial content
+        - Note any affiliations or signals
+
         Title: {title}
         URL: {url}
         Snippet: {snippet}
         """
 
-        prompt = f"""
-        You are an OSINT analyst. Based on the content below from Twitter (indexed via Google), extract:
-
-        - Reputational risks or controversial statements
-        - Policy positions or campaign themes
-        - Links to extremist or politically sensitive figures
-        - Anything that may affect public perception of {subject}
-
-        Provide bullet points. Include the source URL at the end of each point.
-
-        {content}
-        """
-
         result_text = call_gpt4(prompt)
-        reliability = get_source_reliability(url)
 
         summaries.append({
             "title": title,
             "url": url,
             "summary": result_text,
-            "reliability": reliability,
+            "reliability": "D - Unverified",
             "confidence": "Medium"
         })
-
     return summaries
 
 # === MAIN EXECUTION ===
-
 if __name__ == "__main__":
     subject = load_subject()
+    print(f"✅ Subject: {subject['name']} loaded.")
 
     # --- NewsAPI Flow ---
     articles = load_news_data()
-    news_summaries = analyse_news_articles(subject["name"], articles)
+    news_summaries = analyse_news_articles(subject, articles)
 
     print("\n=== News Analysis Summary ===\n")
     for i, item in enumerate(news_summaries, 1):
@@ -183,9 +161,8 @@ if __name__ == "__main__":
     print("✅ News findings saved to report_newsapi.json")
 
     # --- HIBP Flow ---
-    email_to_check = subject["email"]
     hibp_data = load_hibp_data()
-    hibp_summaries = analyse_breaches(email_to_check, hibp_data)
+    hibp_summaries = analyse_breaches(subject["email"], hibp_data)
 
     print("\n=== Breach Exposure Analysis ===\n")
     for i, item in enumerate(hibp_summaries, 1):
@@ -196,7 +173,7 @@ if __name__ == "__main__":
         json.dump(hibp_summaries, f, indent=2)
     print("✅ Breach findings saved to report_hibp.json")
 
-    # --- Google (Twitter) Flow ---
+    # --- Google Flow ---
     google_data = load_google_results()
     google_summaries = analyse_google_snippets(subject["name"], google_data)
 
