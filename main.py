@@ -2,9 +2,8 @@ import streamlit as st
 import json
 import subprocess
 
-st.info("🟢 App started successfully — UI rendering confirmed.")
-
 st.set_page_config(page_title="OpenTrace Briefing Generator", layout="centered")
+
 st.title("🧠 OpenTrace: OSINT Briefing Generator")
 
 st.markdown("""
