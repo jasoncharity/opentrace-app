@@ -3,13 +3,14 @@ import json
 import subprocess
 
 st.set_page_config(page_title="OpenTrace Briefing Generator", layout="centered")
-st.title("🧠 OpenTrace Prototype 1")
+st.title("🧠 OpenTrace: OSINT Briefing Generator")
 
 st.markdown("""
-Not to user: this form is for testing purposes only and should not be relied upon for real-world intelligence reporting.
+Welcome to OpenTrace. Fill out a subject profile, run a multi-source intelligence analysis,
+and generate a final briefing — all within one interface.
 """)
 
-# === Session state to manage workflow ===
+# === Session State to Track Progress ===
 if "stage" not in st.session_state:
     st.session_state.stage = 1
 
@@ -26,7 +27,7 @@ with st.form("subject_form"):
     affiliations = st.text_area("Affiliations (comma-separated)", value="")
     usernames = st.text_input("Usernames / Handles")
     phone = st.text_input("Phone")
-    notes = st.text_area("Context / Analyst Notes")
+    notes = st.text_area("Analyst Notes / Context")
 
     submitted = st.form_submit_button("Save Subject Profile")
 
@@ -47,13 +48,13 @@ if submitted:
     with open("subject.json", "w") as f:
         json.dump(subject, f, indent=2)
 
-    st.success("✅ Subject profile saved.")
+    st.success("✅ Subject profile saved to subject.json")
     st.session_state.stage = 2
 
-# === Step 2: Run Analysis (main.py) ===
+# === Step 2: Run Analysis ===
 if st.session_state.stage >= 2:
-    st.header("Step 2: Run Source Analysis")
-    if st.button("Run main.py (GPT-powered analysis)"):
+    st.header("Step 2: Run Analysis")
+    if st.button("Run main.py"):
         with st.spinner("Running multi-source analysis..."):
             result = subprocess.run(["python", "main.py"], capture_output=True, text=True)
             st.text(result.stdout[-1000:])
@@ -62,14 +63,17 @@ if st.session_state.stage >= 2:
 
 # === Step 3: Generate Report ===
 if st.session_state.stage >= 3:
-    st.header("Step 3: Generate & View Report")
-    if st.button("Generate Final Report (Markdown)"):
-        with st.spinner("Building final report..."):
+    st.header("Step 3: Generate Report")
+    if st.button("Run report.py"):
+        with st.spinner("Generating final report..."):
             result = subprocess.run(["python", "report.py"], capture_output=True, text=True)
             st.text(result.stdout[-1000:])
         st.success("✅ Report generated: protection_briefing.md")
 
     if st.checkbox("Preview Report"):
-        with open("protection_briefing.md", "r") as f:
-            report = f.read()
-        st.markdown(report)
+        try:
+            with open("protection_briefing.md", "r") as f:
+                report_md = f.read()
+            st.markdown(report_md)
+        except FileNotFoundError:
+            st.warning("📄 Report not found. Please run report.py first.")
