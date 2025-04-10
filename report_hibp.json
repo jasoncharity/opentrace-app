@@ -1,0 +1,122 @@
+[
+  {
+    "breach": "Adobe",
+    "date": "2013-10-04",
+    "summary": "- Type of data exposed: Internal ID, username, email, encrypted password and a password hint in plain text.\n- Reputational or Security risk: This breach carries a high security risk for the subject. Even though the passwords were encrypted, the poor cryptography made them easily resolvable back to plain text. Furthermore, password hints were given in plain text, potentially revealing even more about the user's password and hence increasing the risk of unauthorized access to other accounts that use the same or similar passwords. The subject could potentially have all accounts associated with this email compromised, especially if they reused passwords or made them predictable based on the hint provided.\n- Severity of the breach: High. The Adobe breach in 2013 is considered one of the biggest data breaches ever due to the number of accounts affected and the type of data exposed. The poor password encryption and plain text hints have exacerbated the potential risks associated with this breach.",
+    "confidence": "Medium"
+  },
+  {
+    "breach": "MailRu",
+    "date": "2014-09-10",
+    "summary": "- The type of data exposed in the MailRu breach on 2014-09-10 includes email addresses and passwords.\n- The reputational or security risk this creates for the subject 'jasonderby@mac.com' could be significant if the same email address and password were used for other online accounts, thus, potentially allowing unauthorized access to those services. It also puts the person at risk for identity theft and phishing attempts.\n- The severity of the breach is high due to the exposure of plaintext passwords along with email addresses for such a large number of users. Despite the records being flagged as \"unverified\", the fact that many of the credentials were confirmed as legitimate adds to the severity.",
+    "confidence": "Medium"
+  },
+  {
+    "breach": "Dropbox",
+    "date": "2012-07-01",
+    "summary": "- Breach: Dropbox, Date: 2012-07-01. The type of data exposed includes, email addresses and salted hashes and encrypted versions of passwords (half of them SHA1, half of them bcrypt). \n- Reputational/Security Risk: The individual 'jasonderby@mac.com' associated with this breach faces a significant risk of unauthorized access to their Dropbox account or any other accounts where similar email and password combinations are used. This could lead to private data leakage, identity theft, and potential misuse of their personal or professional information. \n- Severity of the Breach: This breach is of high severity considering the sheer volume of data exposed - over 68 million records were traded online. This exposure not only places each individual user at risk but also severely tarnishes Dropbox's reputation in terms of data protection and customer trust.",
+    "confidence": "Medium"
+  },
+  {
+    "breach": "Lastfm",
+    "date": "2012-03-22",
+    "summary": "- Type of data exposed: The breach exposed 37 million unique email addresses, including 'jasonderby@mac.com', along with usernames and passwords stored as unsalted MD5 hashes.\n- Reputational or security risk: This breach leads to a high reputational and security risk for the subject, as sensitive information such as usernames and passwords have been exposed, potentially allowing unauthorized access to the subject's Last.fm account and any other accounts where the same credentials are used.\n- Severity of the breach: This breach is of a high severity. The large scale of the disclosed data, along with the fact that the passwords were stored unsalted, meaning they could be more readily cracked, highlights the potential seriousness of the breach's effect on the exposed individuals.",
+    "confidence": "Medium"
+  },
+  {
+    "breach": "RiverCityMedia",
+    "date": "2017-01-01",
+    "summary": "- Type of data exposed: The data exposed in the RiverCityMedia breach on 2017-01-01 includes email addresses, IP addresses, names, and physical addresses. \n\n- Reputational or security risk: Based on the exposed email 'jasonderby@mac.com', the person could potentially be linked to a massive spam operation. Moreover, the individual's privacy is highly compromised due to the exposure of their IP address, name and physical address. This could lead to identity theft, unwanted marketing, or other malicious actions. Their personal reputation could also be harmed if their details are misused.\n\n- Severity of the breach: The severity of the RiverCityMedia breach on 2017-01-01 is high. It impacted almost 1.4 billion people and close to 400 million unique email addresses. Furthermore, the breach revealed sensitive information like names and physical addresses, indicating a significant data protection failure.",
+    "confidence": "Medium"
+  },
+  {
+    "breach": "AntiPublic",
+    "date": "2016-12-16",
+    "summary": "- Breach: AntiPublic, Date: 2016-12-16. The type of data exposed included email addresses and passwords.\n- This breach presents a significant reputational and security risk as the email 'jasonderby@mac.com' could be used for malicious purposes such as identity theft, impersonation, blackmail, or other cyber fraud. Furthermore, if the owner reused their password across different platforms, this could also lead to unauthorized access to other accounts.\n- Considering the scale of the breach, which affected 458 million unique email addresses, and the potential damage caused by password reuse across various platforms, the severity of the breach can be classified as high.",
+    "confidence": "Medium"
+  },
+  {
+    "breach": "ExploitIn",
+    "date": "2016-10-13",
+    "summary": "- Breach: ExploitIn, Date: 2016-10-13: The type of data exposed included email addresses and associated passwords. \n- Breach: ExploitIn, Date: 2016-10-13: The reputational or security risk this creates for the subject is high, as the exposed data could lead to unauthorized access to various online systems where the email and password have been reused, leading to potential identity theft, financial loss, and further personal information exposure. \n- Breach: ExploitIn, Date: 2016-10-13: The severity of the breach is high, as the extensive list of email addresses and passwords were widely circulated and used for \"credential stuffing\" attacks, potentially compromising many online accounts.",
+    "confidence": "Medium"
+  },
+  {
+    "breach": "OnlinerSpambot",
+    "date": "2017-08-28",
+    "summary": "- Breach Name: OnlinerSpambot, Date: 2017-08-28. The exposed data included: 711 million unique email addresses, with many of these accompanied by corresponding passwords.\n- The reputational and security risks for 'jasonderby@mac.com' are significant. This includes potential identity theft, unauthorized access to other accounts (if same password is used across multiple sites), and phishing or targeted spam attacks.  \n- Severity of the Breach: High. The breach exposed a vast amount of email addresses and corresponding passwords, making it one of the largest breaches of this kind.",
+    "confidence": "Medium"
+  },
+  {
+    "breach": "Zomato",
+    "date": "2017-05-17",
+    "summary": "- Type of data exposed: The Zomato data breach on 2017-05-17 exposed email addresses, usernames, and salted MD5 hashes of passwords.\n- Reputational or security risk: The breach puts the owner of the 'jasonderby@mac.com' email at risk of targeted phishing attacks and potential unauthorized access to their Zomato account. If the same email or username and password combination was used on other platforms, those accounts are also at risk. This breach could also harm his reputation if the compromised information is used maliciously.\n- Severity of the breach: Considering that 17 million accounts were affected and sensitive information was exposed, the severity of the Zomato breach can be considered high.",
+    "confidence": "Medium"
+  },
+  {
+    "breach": "Pemiblanc",
+    "date": "2018-04-02",
+    "summary": "- Breach: Pemiblanc, Date: 2018-04-02. The type of data exposed includes email addresses and passwords.\n- This breach presents a significant reputational and security risk for the subject. With this data, cyber criminals could potentially gain access to personal, financial, and other sensitive data tied to this email account. The individual is therefore at risk of identity theft, financial fraud, and potential blackmail. Furthermore, if this email account is associated with any businesses, there is a risk of corporate data breaches or industrial espionage.\n- Considering the sensitive nature of the data exposed - email addresses and passwords - and the subsequent risks of misuse of this information, the severity of this breach can be rated as high.",
+    "confidence": "Medium"
+  },
+  {
+    "breach": "Collection1",
+    "date": "2019-01-07",
+    "summary": "- Type of data exposed: The breach exposed email addresses and passwords.\n- Reputational or security risk: This puts the subject 'jasonderby@mac.com' at risk of email account takeover or identity theft if the exposed passwords are reused across other platforms. The credibility of the individual may also be affected as sensitive information contained in the email could be exposed.\n- Severity of the breach: Given the volume of unique email addresses (773 million) involved in the Collection1 data breach that occurred on Jan 7, 2019, the breach severity is high.",
+    "confidence": "Medium"
+  },
+  {
+    "breach": "MyFitnessPal",
+    "date": "2018-02-01",
+    "summary": "- Type of data exposed: Email addresses, usernames, IP addresses, and passwords stored as SHA-1 and bcrypt hashes.\n- Reputational or security risk: This breach creates a significant security risk for the subject, as malicious actors could potentially crack the hashed passwords to gain unauthorized access to the victim's personal accounts (email, financial, social media). Given that the data was listed for sale on a dark web marketplace, the risk of identity theft or fraud is significantly heightened. The reputational risk is also significant, as users might lose trust in the service due to the breach and its handling.\n- Severity of the breach: High. The breach affected a large amount of users (144 million) and exposed sensitive information, such as hashed passwords and IP addresses, on a dark web marketplace. These combined factors make this breach a serious incident. The breach name and date are \"MyFitnessPal\" and \"2018-02-01\" respectively.\n",
+    "confidence": "Medium"
+  },
+  {
+    "breach": "Houzz",
+    "date": "2018-05-23",
+    "summary": "- Type of data exposed: The breach exposed unique email addresses, names, IP addresses, geographic locations, and in some cases, salted hashes of passwords or links to social media profiles used to authenticate to the service.\n- Reputational or security risk: This breach creates a significant security risk for the subject. The exposed data could be used to carry out a range of malicious actions, from identity theft and fraud to targeted phishing attacks. It could also harm the subject's reputation if their interaction with the housing design site was to be made public.\n- Severity of the breach: The severity of the Houzz breach on 2018-05-23 is high. It affected a vast number of users (nearly 49 million), and a wide range of personal data was exposed. The delay in discovering and disclosing the breach may have increased potential misuse of the exposed data.",
+    "confidence": "Medium"
+  },
+  {
+    "breach": "Gravatar",
+    "date": "2020-10-03",
+    "summary": "- Breach Name: Gravatar\n- Breach Date: 2020-10-03\n- Type of data exposed: Names, usernames, MD5 hashes of email addresses, email addresses (including 'jasonderby@mac.com'), and associated avatar data.\n- Reputational or security risks: This breach poses several security risks to 'jasonderby@mac.com' as his name, username, and email address were exposed. There is also the potential for misuse of his avatar data, posing a reputational risk if used inappropriately. It also increases the risk of phishing attacks, identity theft, and other forms of cyber crime.\n- Severity of the breach: High. This is due to the highly sensitive nature of the exposed data and the potential for it to be misused for nefarious activities. Additionally, a large volume of data (167 million names, usernames, and MD5 hashes of email addresses) were exposed in this breach.",
+    "confidence": "Medium"
+  },
+  {
+    "breach": "Deezer",
+    "date": "2019-04-22",
+    "summary": "- The type of data exposed in the Deezer breach on April 22nd, 2019, includes unique email addresses, IP addresses, names, usernames, genders, dates of birth, and the geographic location of the customer.\n\n- The reputational and security risk this creates for the subject, in this case, the owner of the email 'jasonderby@mac.com', is high. The breach could lead to potential identity theft, as well as targeted phishing attacks. It could also potentially affect the subject's online reputation negatively due to personal details being disclosed and sold on hacking forums.\n\n- The severity of this breach is high considering the significant amount of personal data exposed and the number of customers affected, along with the clear evidence of data being sold and distributed through hacking forums.",
+    "confidence": "Medium"
+  },
+  {
+    "breach": "Twitter200M",
+    "date": "2021-01-01",
+    "summary": "- Type of data exposed: The data exposed in the Twitter200M breach (2021-01-01) includes the email address 'jasonderby@mac.com', along with public Twitter profile information that includes names, usernames, and follower counts.\n- Reputational or security risk: This data exposure presents significant reputational and security risks for the subject. Potential use of this data for phishing attacks might ensue. The information can also help potential attackers in social engineering attacks, by appearing more credible using real Twitter usernames and profiles. Moreover, if the subject uses the same usernames across different platforms, this breach can lead to targeted attacks across platforms.\n- Severity of the Breach: Considering the potential misuse of exposed Twitter profile information and the risk of phishing or social engineering attacks, the severity of this breach from the subject's perspective is high.",
+    "confidence": "Medium"
+  },
+  {
+    "breach": "NazApi",
+    "date": "2023-09-20",
+    "summary": "- Breach: NazApi\n- Date: 2023-09-20\n- The type of data exposed included email addresses and plain text password pairs associated with the email 'jasonderby@mac.com'. The specific services these credentials were used for were also exposed.\n- The reputational risk for the subject includes potential unauthorised access to important personal and professional accounts, exposing sensitive or proprietary information. There is also the risk of phishing attempts and potential damage to personal and professional reputation.\n- The security risk is high as exposed credentials can lead to unauthorised access to various online accounts associated with the email address 'jasonderby@mac.com', especially if the person uses similar or the same passwords for multiple accounts.\n- The severity of the breach can be considered high due to the high volume of exposed email addresses and plain text password pairs, and the risk this poses to the individual's online security and privacy.",
+    "confidence": "Medium"
+  },
+  {
+    "breach": "TelegramCombolists",
+    "date": "2024-05-28",
+    "summary": "- The data exposed in the TelegramCombolists breach on May 28, 2024 includes emails, usernames, and passwords. It was specified that, in many cases, the website the credentials were entered into was also exposed.\n- This breach creates a major reputational and security risk for the subject. The exposed data can be used for nefarious activities such as phishing, identity theft, or unauthorized access to other accounts where the subject reused passwords. Moreover, the knowledge of specific websites opens up additional opportunities for targeted attacks.\n- Given the large quantity of data exposed and the sensitive nature of that data (email addresses, passwords, and associated websites), the severity of this breach is high.",
+    "confidence": "Medium"
+  },
+  {
+    "breach": "NotSOCRadar",
+    "date": "2024-08-03",
+    "summary": "- Type of data exposed: Email addresses, specifically 'jasonderby@mac.com'.\n- Reputational or Security Risk: This creates a security risk for the subject as their email address can be used in phishing attempts or for spamming activities. Furthermore, if this email address is used across multiple platforms, it could potentially be used to access these accounts, especially if two-factor authentication is not in place.\n- Severity of the Breach: Medium. \n  - The breach name: NotSOCRadar\n  - Date: 2024-08-03\n  - Although the breach mainly exposed email addresses which depending on other layers of security might not lead to unauthorized access to other systems or accounts, 282 million unique addresses were exposed. This kind of exposure increases potential phishing or spamming attempts, thus increasing the overall severity.",
+    "confidence": "Medium"
+  },
+  {
+    "breach": "Hopamedia",
+    "date": "2020-08-30",
+    "summary": "- Type of data exposed: The data exposed in the Hopamedia breach on 2020-08-30 includes email addresses, names, phone numbers, country of residence, and telecommunications carrier information.\n- Reputational or security risk: The exposed data creates significant security risks for the subject, including potential phishing or social engineering attacks. There is also a considerable reputational risk, as the breach may indicate poor data security practices. This can lead to the loss of trust among customers and potential regulatory scrutiny.\n- Severity of the breach: The severity of the Hopamedia breach on 2020-08-30 is high. A large number of records have been exposed, and a variety of sensitive personal information is involved. This information could significantly assist in stealing identities or facilitating targeted attacks.",
+    "confidence": "Medium"
+  }
+]
