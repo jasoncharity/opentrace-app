@@ -32,28 +32,31 @@ with st.form("subject_form"):
 
     submitted = st.form_submit_button("Save Subject Profile")
 
-if submitted:
-    subject = {
-        "name": name,
-        "aliases": [a.strip() for a in aliases.split(",") if a.strip()],
-        "email": email,
-        "dob": dob.isoformat(),
-        "address": address,
-        "location": location,
-        "affiliations": [a.strip() for a in affiliations.split(",") if a.strip()],
-        "usernames": usernames,
-        "phone": phone,
-        "notes": notes
-    }
+    if submitted:
+        subject = {
+            "name": name,
+            "aliases": [a.strip() for a in aliases.split(",") if a.strip()],
+            "email": email,
+            "dob": dob.isoformat(),
+            "address": address,
+            "location": location,
+            "affiliations": [a.strip() for a in affiliations.split(",") if a.strip()],
+            "usernames": usernames,
+            "phone": phone,
+            "notes": notes
+        }
 
-    with open("subject.json", "w") as f:
-        json.dump(subject, f, indent=2)
+        with open("subject.json", "w") as f:
+            json.dump(subject, f, indent=2)
 
-    import time
-    time.sleep(0.5) # This adds half second delays
-    
-    st.success("✅ Subject profile saved to subject.json")
-    st.session_state.stage = 2
+        import time
+        time.sleep(0.5)
+
+        st.success("✅ Subject profile saved to subject.json")
+        st.markdown("### Preview of Saved Subject")
+        st.json(subject)
+     
+        st.session_state.stage = 2
 
 # === Step 2: Run Analysis ===
 if st.button("Run run_analysis.py"):
