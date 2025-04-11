@@ -1,6 +1,11 @@
 import streamlit as st
 import json
 import subprocess
+import os
+
+# === Ensure consistent path to subject.json ===
+def get_subject_path():
+    return os.path.join(os.path.dirname(__file__), "subject.json")
 
 st.set_page_config(page_title="OpenTrace Briefing Generator", layout="centered")
 
@@ -47,7 +52,7 @@ with st.form("subject_form"):
             "notes": notes
         }
 
-        with open("subject.json", "w") as f:
+        with open(get_subject_path(), "w") as f:
             json.dump(subject, f, indent=2)
 
         import time
@@ -57,7 +62,7 @@ with st.form("subject_form"):
         
         # Read back from disk to confirm
         try:
-            with open("subject.json", "r") as f:
+            with open(get_subject_path(), "r") as f:
                 confirmed = json.load(f)
 
             st.markdown("### ✅ subject.json written successfully")
@@ -69,7 +74,7 @@ with st.form("subject_form"):
 
 # === Step 2: Run Analysis ===
 if st.button("Run run_analysis.py"):
-    with open("subject.json", "r") as f:
+    with open(get_subject_path(), "r") as f:
         subject = json.load(f)
     st.info(f"🔍 Running analysis for: {subject['name']}")
 
