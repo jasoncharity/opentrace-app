@@ -31,6 +31,7 @@ with st.form("subject_form"):
     notes = st.text_area("Analyst Notes / Context")
 
     submitted = st.form_submit_button("Save Subject Profile")
+    st.caption(f"📌 Form submitted: {submitted}")
 
     if submitted:
         subject = {
@@ -53,8 +54,16 @@ with st.form("subject_form"):
         time.sleep(0.5)
 
         st.success("✅ Subject profile saved to subject.json")
-        st.markdown("### Preview of Saved Subject")
-        st.json(subject)
+        
+        # Read back from disk to confirm
+        try:
+            with open("subject.json", "r") as f:
+                confirmed = json.load(f)
+
+            st.markdown("### ✅ subject.json written successfully")
+            st.json(confirmed)
+        except Exception as e:
+            st.error(f"❌ Failed to read back subject.json: {e}")
      
         st.session_state.stage = 2
 
