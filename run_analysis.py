@@ -7,17 +7,13 @@ from openai import OpenAI
 load_dotenv()
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
-# === GPT Wrapper ===
-def call_gpt4(prompt):
-    response = client.chat.completions.create(
-        model="gpt-4",
-        messages=[{"role": "user", "content": prompt}]
-    )
-    return response.choices[0].message.content
+# === Shared path helper ===
+def get_subject_path():
+    return os.path.abspath(os.path.join(os.path.dirname(__file__), "subject.json"))
 
 # === Load subject profile ===
-def load_subject(filename="subject.json"):
-    with open(filename, "r") as f:
+def load_subject():
+    with open(get_subject_path(), "r") as f:
         return json.load(f)
 
 # === Load JSON inputs ===
@@ -50,6 +46,13 @@ def structure_news_findings(subject, findings):
     ]
 
 # === GPT Analysis Functions ===
+def call_gpt4(prompt):
+    response = client.chat.completions.create(
+        model="gpt-4",
+        messages=[{"role": "user", "content": prompt}]
+    )
+    return response.choices[0].message.content
+
 def analyse_news_articles(subject, articles):
     summaries = []
     for article in articles[:5]:
@@ -144,7 +147,8 @@ def analyse_google_snippets(subject_name, results):
 # === MAIN EXECUTION ===
 if __name__ == "__main__":
     subject = load_subject()
-    print(f"✅ Subject: {subject['name']} loaded.")
+    print(f"✅ Subject loaded from: {get_subject_path()}")
+    print(f"📦 Running analysis for: {subject['name']}")
 
     # --- NewsAPI Flow ---
     articles = load_news_data()
