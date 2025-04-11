@@ -56,14 +56,16 @@ if submitted:
     st.session_state.stage = 2
 
 # === Step 2: Run Analysis ===
-if st.session_state.stage >= 2:
-    st.header("Step 2: Run Analysis")
-    if st.button("Run run_analysis.py"):
-        with st.spinner("Running multi-source analysis..."):
-            result = subprocess.run(["python", "run_analysis.py"], capture_output=True, text=True)
-            st.text(result.stdout[-1000:])
-        st.success("✅ Analysis complete.")
-        st.session_state.stage = 3
+if st.button("Run run_analysis.py"):
+    with open("subject.json", "r") as f:
+        subject = json.load(f)
+    st.info(f"🔍 Running analysis for: {subject['name']}")
+
+    with st.spinner("Running multi-source analysis..."):
+        result = subprocess.run(["python", "run_analysis.py"], capture_output=True, text=True)
+        st.text(result.stdout[-1000:])
+    st.success("✅ Analysis complete.")
+    st.session_state.stage = 3
 
 # === Step 3: Generate Report ===
 if st.session_state.stage >= 3:
