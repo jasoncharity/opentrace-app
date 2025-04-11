@@ -7,38 +7,17 @@ load_dotenv()
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 def get_subject_path():
-    return os.path.abspath(os.path.join(os.path.dirname(__file__), "subject.json"))
+    path = os.path.join(os.path.expanduser("~"), ".opentrace", "subject.json")
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    return path
 
 def load_subject():
     with open(get_subject_path(), "r") as f:
         return json.load(f)
 
-def load_news_data(filename="output_newsapi.json"):
+def load_json(filename):
     with open(filename, "r") as f:
         return json.load(f)
-
-def load_hibp_data(filename="output_hibp.json"):
-    with open(filename, "r") as f:
-        return json.load(f)
-
-def load_google_results(filename="output_google.json"):
-    with open(filename, "r") as f:
-        return json.load(f)
-
-def structure_news_findings(subject, findings):
-    return [
-        {
-            "source": "NewsAPI",
-            "subject": subject["name"],
-            "theme": "Media/Press Coverage",
-            "title": item["title"],
-            "url": item["url"],
-            "summary": item["summary"],
-            "reliability": item["reliability"],
-            "confidence": item["confidence"]
-        }
-        for item in findings
-    ]
 
 def call_gpt4(prompt):
     response = client.chat.completions.create(
@@ -47,83 +26,65 @@ def call_gpt4(prompt):
     )
     return response.choices[0].message.content
 
-def analyse_news_articles(subject, articles):
-    summaries = []
-    for article in articles[:5]:
-        prompt = f"""
-        You are an OSINT analyst. Review the news article below and identify:
-        - Reputational concerns
-        - Legal or political controversies
-        - Links to extremist or high-risk associations
+def analyse_news(subject, articles):
+    return [{
+        "title": a["title"],
+        "url": a["url"],
+        "summary": call_gpt4(f"""
+        You are an OSINT analyst. Analyse the article:
 
-        Title: {article.get("title")}
-        URL: {article.get("url")}
-        Description: {article.get("description", "")}
-        """
-        summaries.append({
-            "title": article.get("title"),
-            "url": article.get("url"),
-            "summary": call_gpt4(prompt),
-            "reliability": "C - Mixed Reliability",
-            "confidence": "High"
-        })
-    return summaries
+        Title: {a['title']}
+        URL: {a['url']}
+        Description: {a.get('description', '')}
+        """),
+        "reliability": "C - Mixed Reliability",
+        "confidence": "High"
+    } for a in articles[:5]]
 
 def analyse_breaches(email, breaches):
-    summaries = []
-    for breach in breaches[:5]:
-        prompt = f"""
-        Breach: {breach.get("Name")}
-        Date: {breach.get("BreachDate")}
-        Description: {breach.get("Description")}
+    return [{
+        "breach": b["Name"],
+        "date": b["BreachDate"],
+        "summary": call_gpt4(f"""
+        Breach: {b['Name']}
+        Date: {b['BreachDate']}
+        Description: {b['Description']}
 
-        You are an OSINT analyst. Identify:
-        - Type of data exposed
-        - Reputational or security risks
-        - Severity (low/medium/high)
-        """
-        summaries.append({
-            "breach": breach.get("Name"),
-            "date": breach.get("BreachDate"),
-            "summary": call_gpt4(prompt),
-            "confidence": "Medium"
-        })
-    return summaries
+        What was exposed, what’s the risk, and how severe is it?
+        """),
+        "confidence": "Medium"
+    } for b in breaches[:5]]
 
-def analyse_google_snippets(name, results):
-    summaries = []
-    for result in results[:5]:
-        prompt = f"""
-        You are an OSINT analyst. Based on the content below from Google-indexed Twitter content,
-        identify reputational or political risks for {name}.
+def analyse_google(subject_name, results):
+    return [{
+        "title": r["title"],
+        "url": r["link"],
+        "summary": call_gpt4(f"""
+        You are an OSINT analyst. Review this snippet from Google:
 
-        Title: {result.get("title")}
-        URL: {result.get("link")}
-        Snippet: {result.get("snippet", "")}
-        """
-        summaries.append({
-            "title": result.get("title"),
-            "url": result.get("link"),
-            "summary": call_gpt4(prompt),
-            "reliability": "D - Unverified",
-            "confidence": "Medium"
-        })
-    return summaries
+        Title: {r["title"]}
+        URL: {r["link"]}
+        Snippet: {r.get("snippet", "")}
 
-# === MAIN ===
+        Identify any reputational or political risk related to {subject_name}.
+        """),
+        "reliability": "D - Unverified",
+        "confidence": "Medium"
+    } for r in results[:5]]
+
 if __name__ == "__main__":
     subject = load_subject()
-    print(f"📦 Loaded subject: {subject['name']}")
+    print(f"🧾 Subject loaded: {subject['name']}")
 
-    news = analyse_news_articles(subject, load_news_data())
-    hibp = analyse_breaches(subject["email"], load_hibp_data())
-    google = analyse_google_snippets(subject["name"], load_google_results())
+    news = analyse_news(subject, load_json("output_newsapi.json"))
+    breaches = analyse_breaches(subject["email"], load_json("output_hibp.json"))
+    google = analyse_google(subject["name"], load_json("output_google.json"))
 
     with open("report_newsapi.json", "w") as f:
-        json.dump(structure_news_findings(subject, news), f, indent=2)
+        json.dump(news, f, indent=2)
     with open("report_hibp.json", "w") as f:
-        json.dump(hibp, f, indent=2)
+        json.dump(breaches, f, indent=2)
     with open("report_google_twitter.json", "w") as f:
         json.dump(google, f, indent=2)
 
-    print("✅ All report components saved")
+    print("✅ All analysis complete and reports saved.")
