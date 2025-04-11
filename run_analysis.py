@@ -147,6 +147,7 @@ def analyse_google_snippets(subject_name, results):
 # === MAIN EXECUTION ===
 if __name__ == "__main__":
     subject = load_subject()
+    print(f"🧪 Loaded subject: {subject['name']}")
     print(f"✅ Subject loaded from: {get_subject_path()}")
     print(f"📦 Running analysis for: {subject['name']}")
 

@@ -80,6 +80,7 @@ def format_section(title, items):
 # === MAIN ===
 if __name__ == "__main__":
     subject = load_subject()
+    print(f"🧪 Loaded subject: {subject['name']}")
     print(f"📄 Generating report for subject: {subject['name']}")
 
     # Load analysis output

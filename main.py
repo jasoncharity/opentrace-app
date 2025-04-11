@@ -83,8 +83,11 @@ if st.session_state.stage >= 2:
             st.info(f"🔍 Running analysis for: {subject['name']}")
 
             with st.spinner("Running multi-source analysis..."):
-                result = subprocess.run(["python", "run_analysis.py"], capture_output=True, text=True)
-                st.text(result.stdout[-1000:])
+                try:
+                    exec(open("report.py").read())
+                    st.success("✅ Report script executed successfully")
+                except Exception as e:
+                    st.error(f"❌ Failed to generate report: {e}")
             st.success("✅ Analysis complete.")
             st.session_state.stage = 3
 
@@ -102,8 +105,11 @@ if st.session_state.stage >= 3:
             st.info(f"📄 Generating report for: {subject['name']}")
 
             with st.spinner("Generating final report..."):
-                result = subprocess.run(["python", "report.py"], capture_output=True, text=True)
-                st.text(result.stdout[-1000:])
+                try:
+                    exec(open("run_analysis.py").read())
+                    st.success("✅ Analysis script executed successfully")
+                except Exception as e:
+                    st.error(f"❌ Failed to run analysis: {e}")
             st.success("✅ Report generated")
 
         except Exception as e:
